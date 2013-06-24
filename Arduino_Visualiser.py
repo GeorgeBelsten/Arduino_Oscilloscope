@@ -1,3 +1,18 @@
+"""
+Plots the data from the Arduino board over time. 
+
+Requires Arduino_Interfacer.py in the same directory to run. 
+
+This is a wxPython application. It allows you to pause/resume the 
+plotting, enable or disable the grid, set manual values for the length of 
+the x (time) axis and the maximum/minimum boundaries of the y axis.
+
+This program is a significantly modified version of a dynamic plotting 
+application produced by Eli Bendersky. Modifications were performed by 
+George Belsten and Thomas Laird.
+Last Modified: 24 June 2013
+"""
+
 import os
 import pprint
 import random
@@ -75,6 +90,7 @@ class GraphFrame(wx.Frame):
         
 
     def create_menu(self):
+    """Creates a menu with an option to save the plot"""
         self.menubar = wx.MenuBar()
         
         # Create save option
@@ -86,6 +102,7 @@ class GraphFrame(wx.Frame):
         self.SetMenuBar(self.menubar)
 
     def create_main_panel(self):
+    """Creates the aplication's main window"""
         self.panel = wx.Panel(self)
         
         # Create graph plot
@@ -142,6 +159,7 @@ class GraphFrame(wx.Frame):
         self.statusbar = self.CreateStatusBar()
 
     def init_plot(self):
+    """Initialises the graph plot"""
         self.dpi = 100
         self.fig = Figure((10.0, 5.0), dpi=self.dpi)
 
@@ -162,6 +180,7 @@ class GraphFrame(wx.Frame):
             )[0]
 
     def draw_plot(self):
+    """Re-draws the graph plot."""
         # Obtain manually set value for x axis length
         try:
             x_len = float(self.xlen_control.manual_value())
@@ -235,6 +254,7 @@ class GraphFrame(wx.Frame):
             self.flash_status_message("Saved to %s" % path)
     
     def refresh_graph(self):
+    """Pulls new data from the interfacer and re-draws the plot."""
         while True:
             # if paused do not add data, but still redraw the plot
             # (to respond to manual control changes)
